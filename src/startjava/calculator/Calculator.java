@@ -1,3 +1,5 @@
+package startjava.calculator;
+
 public class Calculator {
     public static int evaluate(int a, int b, char op) {
         return switch(op) {
