@@ -10,9 +10,13 @@ public class CalculatorTest {
     }
 
     public void run() {
+        String answer = "yes";
         do {
+            if (!"yes".equals(answer)) {
+                continue;
+            }
             evaluate();
-        } while ("yes".equals(askContinue()));
+        } while (!"no".equals(answer = askContinue()));
     }
 
     private void evaluate() {
@@ -27,18 +31,14 @@ public class CalculatorTest {
             displayError("введено неправильное значение");
         } catch (IllegalArgumentException e) {
             displayError(String.format("""
-                    операция '%s' не поддeрживается.
-                    Доступны следующие операции: %s""",
+                            операция '%s' не поддeрживается.
+                            Доступны следующие операции: %s""",
                     e.getMessage(), Calculator.OPERATORS_LIST));
         }
     }
 
     private String askContinue() {
-        String answer;
-        do {
-            answer = console.readLine("Хотите продолжить вычисления? [yes/no]: ").toLowerCase();
-        } while (!("yes".equals(answer) || "no".equals(answer)));
-        return answer;
+        return console.readLine("Хотите продолжить вычисления? [yes/no]: ").toLowerCase();
     }
 
     private static void displayAnswer(int a, int b, char op, int result) {
