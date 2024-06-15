@@ -1,9 +1,13 @@
 package startjava.calculator;
 
-import java.util.Scanner;
+import java.io.Console;
 
 public class CalculatorTest {
-    private final Scanner scanner = new Scanner(System.in);
+    private final Console console;
+
+    public CalculatorTest(Console console) {
+        this.console = console;
+    }
 
     public void run() {
         do {
@@ -13,32 +17,45 @@ public class CalculatorTest {
 
     private void evaluate() {
         try {
-            System.out.print("Введите первое число: ");
-            int a = Integer.parseInt(scanner.nextLine());
-            System.out.print("Введите знак математической операции: ");
-            char op = scanner.nextLine().charAt(0);
-            System.out.print("Введите второе число: ");
-            int b = Integer.parseInt(scanner.nextLine());
-            System.out.println("Результат: " + Calculator.evaluate(a, b, op));
+            int a = Integer.parseInt(console.readLine("Введите первое число: "));
+            char op = console.readLine("Введите знак операции (%s): ", Calculator.OPERATORS_LIST).charAt(0);
+            int b = Integer.parseInt(console.readLine("Введите второе число: "));
+            displayAnswer(a, b, op, Calculator.evaluate(a, b, op));
         } catch (ArithmeticException e) {
-            System.out.println("На ноль делить нельзя");
+            displayError("нельзя делить на ноль");
         } catch (NumberFormatException e) {
-            System.out.println("Вы ввели неправильное значение");
+            displayError("введено неправильное значение");
         } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+            displayError(String.format("""
+                    операция '%s' не поддeрживается.
+                    Доступны следующие операции: %s""",
+                    e.getMessage(), Calculator.OPERATORS_LIST));
         }
     }
 
     private String askContinue() {
         String answer;
         do {
-            System.out.print("Хотите продолжить вычисления? [yes/no]: ");
-            answer = scanner.nextLine().toLowerCase();
+            answer = console.readLine("Хотите продолжить вычисления? [yes/no]: ").toLowerCase();
         } while (!("yes".equals(answer) || "no".equals(answer)));
         return answer;
     }
 
+    private static void displayAnswer(int a, int b, char op, int result) {
+        System.out.printf("%d %c %d = %d%n", a, op, b, result);
+    }
+
+    private static void displayError(String message) {
+        System.out.println("Ошибка: " + message);
+    }
+
     public static void main(String[] args) {
-        new CalculatorTest().run();
+        Console console = System.console();
+        if (console == null) {
+            displayError(String.format("консоль не доступна.%nНевозможно запустить калькулятор."));
+            System.exit(1);
+        }
+
+        new CalculatorTest(console).run();
     }
 }

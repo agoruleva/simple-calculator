@@ -1,15 +1,17 @@
 package startjava.calculator;
 
 public class Calculator {
+    public static final String OPERATORS_LIST = "+, -, *, /, ^, %";
+
     public static int evaluate(int a, int b, char op) {
-        return switch(op) {
+        return switch (op) {
             case '+' -> a + b;
             case '-' -> a - b;
             case '*' -> a * b;
             case '^' -> pow(a, b);
             case '/' -> a / b;
             case '%' -> a % b;
-            default -> throw new IllegalArgumentException("Неизвестная операция");
+            default -> throw new IllegalArgumentException(String.valueOf(op));
         };
     }
 
