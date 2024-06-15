@@ -8,11 +8,15 @@ public class Calculator {
             case '+' -> a + b;
             case '-' -> a - b;
             case '*' -> a * b;
-            case '^' -> pow(a, b);
+            case '^' -> pow(a, Math.abs(b));
             case '/' -> a / b;
             case '%' -> a % b;
             default -> throw new IllegalArgumentException(String.valueOf(op));
         };
+    }
+
+    public static boolean isNegativePower(char op, int power) {
+        return op == '^' && power < 0;
     }
 
     private static int pow(int a, int b) {

@@ -42,7 +42,8 @@ public class CalculatorTest {
     }
 
     private static void displayAnswer(int a, int b, char op, int result) {
-        System.out.printf("%d %c %d = %d%n", a, op, b, result);
+        final String format = "%d %c %d = " + (Calculator.isNegativePower(op, b) ? "1/%d" : "%d") + "%n";
+        System.out.printf(format, a, op, b, result);
     }
 
     private static void displayError(String message) {
