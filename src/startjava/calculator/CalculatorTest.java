@@ -1,12 +1,15 @@
 package startjava.calculator;
 
 import java.io.Console;
+import java.text.DecimalFormat;
 
 public class CalculatorTest {
     private final Console console;
+    private final DecimalFormat resultFormatter;
 
     public CalculatorTest(Console console) {
         this.console = console;
+        this.resultFormatter = new DecimalFormat("#.###");
     }
 
     public void run() {
@@ -41,9 +44,8 @@ public class CalculatorTest {
         return console.readLine("Хотите продолжить вычисления? [yes/no]: ").toLowerCase();
     }
 
-    private static void displayAnswer(int a, int b, char op, int result) {
-        final String format = "%d %c %d = " + (Calculator.isNegativePower(op, b) ? "1/%d" : "%d") + "%n";
-        System.out.printf(format, a, op, b, result);
+    private void displayAnswer(int a, int b, char op, double result) {
+        System.out.printf("%d %c %d = %s%n", a, op, b, resultFormatter.format(result));
     }
 
     private static void displayError(String message) {
