@@ -23,20 +23,13 @@ public class CalculatorTest {
     }
 
     private void evaluate() {
+        final String[] expression = console.readLine("Введите математическое выражение: ").split("\\s+");
         try {
-            int a = Integer.parseInt(console.readLine("Введите первое число: "));
-            char op = console.readLine("Введите знак операции (%s): ", Calculator.OPERATORS_LIST).charAt(0);
-            int b = Integer.parseInt(console.readLine("Введите второе число: "));
-            displayAnswer(a, b, op, Calculator.evaluate(a, b, op));
-        } catch (ArithmeticException e) {
-            displayError("нельзя делить на ноль");
+            displayAnswer(expression, Calculator.evaluate(expression));
         } catch (NumberFormatException e) {
             displayError("введено неправильное значение");
-        } catch (IllegalArgumentException e) {
-            displayError(String.format("""
-                            операция '%s' не поддeрживается.
-                            Доступны следующие операции: %s""",
-                    e.getMessage(), Calculator.OPERATORS_LIST));
+        } catch (IllegalArgumentException | ArithmeticException e) {
+            displayError(e.getMessage());
         }
     }
 
@@ -44,8 +37,9 @@ public class CalculatorTest {
         return console.readLine("Хотите продолжить вычисления? [yes/no]: ").toLowerCase();
     }
 
-    private void displayAnswer(int a, int b, char op, double result) {
-        System.out.printf("%d %c %d = %s%n", a, op, b, resultFormatter.format(result));
+    private void displayAnswer(String[] expression, double result) {
+        System.out.printf("%s %s %s = %s%n", expression[0], expression[1], expression[2],
+                resultFormatter.format(result));
     }
 
     private static void displayError(String message) {
