@@ -4,6 +4,11 @@ import java.io.Console;
 import java.text.DecimalFormat;
 
 public class CalculatorTest {
+    private static final String PROMPT = "Хотите продолжить вычисления? [yes/no]: ";
+    private static final String ALT_PROMPT = "Введите корректный ответ [yes/no]: ";
+    private static final String NO = "no";
+    private static final String YES = "yes";
+
     private final Console console;
     private final DecimalFormat resultFormatter;
 
@@ -13,13 +18,13 @@ public class CalculatorTest {
     }
 
     public void run() {
-        String answer = "yes";
+        String answer = YES;
         do {
-            if (!"yes".equals(answer)) {
+            if (!YES.equals(answer)) {
                 continue;
             }
             evaluate();
-        } while (!"no".equals(answer = askContinue()));
+        } while (!NO.equals(answer = askContinue(answer)));
     }
 
     private void evaluate() {
@@ -33,8 +38,8 @@ public class CalculatorTest {
         }
     }
 
-    private String askContinue() {
-        return console.readLine("Хотите продолжить вычисления? [yes/no]: ").toLowerCase();
+    private String askContinue(String previous) {
+        return console.readLine(YES.equals(previous) ? PROMPT : ALT_PROMPT).toLowerCase();
     }
 
     private void displayAnswer(String[] expression, double result) {
