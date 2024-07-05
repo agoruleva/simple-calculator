@@ -4,16 +4,20 @@ public class Calculator {
     private static final String OPERATORS_LIST = "+, -, *, /, ^, %";
     private static final int EXPRESSION_LENGTH = 3;
 
-    public static double evaluate(String[] expression) {
-        if (expression.length != EXPRESSION_LENGTH) {
+    private Calculator() {
+    }
+
+    public static double evaluate(String expression) {
+        final String[] expressionParts = expression.split("\\s+");
+        if (expressionParts.length != EXPRESSION_LENGTH) {
             throw new IllegalExpressionFormatException("""
                     неверный формат выражения (%d).
-                    Используйте <операнд> <операция> <операнд>""".formatted(expression.length));
+                    Используйте <операнд> <операция> <операнд>""".formatted(expressionParts.length));
         }
 
-        int a = Integer.parseInt(expression[0]);
-        String op = expression[1];
-        int b = Integer.parseInt(expression[2]);
+        int a = Integer.parseInt(expressionParts[0]);
+        String op = expressionParts[1];
+        int b = Integer.parseInt(expressionParts[2]);
         return switch (op) {
             case "+" -> a + b;
             case "-" -> a - b;

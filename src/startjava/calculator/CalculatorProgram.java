@@ -3,7 +3,7 @@ package startjava.calculator;
 import java.io.Console;
 import java.text.DecimalFormat;
 
-public class CalculatorTest {
+public class CalculatorProgram {
     private static final String PROMPT = "Хотите продолжить вычисления? [yes/no]: ";
     private static final String ALT_PROMPT = "Введите корректный ответ [yes/no]: ";
     private static final String NO = "no";
@@ -12,7 +12,7 @@ public class CalculatorTest {
     private final Console console;
     private final DecimalFormat resultFormatter;
 
-    public CalculatorTest(Console console) {
+    public CalculatorProgram(Console console) {
         this.console = console;
         this.resultFormatter = new DecimalFormat("#.###");
     }
@@ -28,7 +28,7 @@ public class CalculatorTest {
     }
 
     private void evaluate() {
-        final String[] expression = console.readLine("Введите математическое выражение: ").split("\\s+");
+        final String expression = console.readLine("Введите математическое выражение: ");
         try {
             displayAnswer(expression, Calculator.evaluate(expression));
         } catch (NumberFormatException e) {
@@ -42,8 +42,8 @@ public class CalculatorTest {
         return console.readLine(YES.equals(previous) ? PROMPT : ALT_PROMPT).toLowerCase();
     }
 
-    private void displayAnswer(String[] expression, double result) {
-        System.out.printf("%s %s %s = %s%n", expression[0], expression[1], expression[2],
+    private void displayAnswer(String expression, double result) {
+        System.out.printf("%s = %s%n", expression.replaceAll("\\s+", " "),
                 resultFormatter.format(result));
     }
 
@@ -58,6 +58,6 @@ public class CalculatorTest {
             System.exit(1);
         }
 
-        new CalculatorTest(console).run();
+        new CalculatorProgram(console).run();
     }
 }
